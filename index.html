@@ -1,1066 +1,641 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Commercial Intelligence — Fairmont Bangkok Sukhumvit</title>
-<meta name="description" content="Executive commercial intelligence dashboard for luxury hospitality." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Fairmont Commercial Dashboard</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-  :root {
-    --bg: #FFFFFF;
-    --surface: #FFFFFF;
-    --surface-2: #FAFAFA;
-    --ink: #000000;
-    --ink-90: rgba(0,0,0,0.90);
-    --ink-70: rgba(0,0,0,0.70);
-    --ink-50: rgba(0,0,0,0.50);
-    --ink-30: rgba(0,0,0,0.30);
-    --ink-15: rgba(0,0,0,0.15);
-    --ink-08: rgba(0,0,0,0.08);
-    --ink-04: rgba(0,0,0,0.04);
-    /* Richer editorial chart palette — saturated yet hospitality-tasteful */
-    --chart-1: #1A1A1A;   /* Ink — primary series */
-    --chart-2: #C5A267;   /* Rich champagne — Fairmont gold */
-    --chart-3: #1F5F73;   /* Deep teal — quietly confident */
-    --chart-4: #4F8A6E;   /* Forest green — natural depth */
-    --chart-5: #C5663D;   /* Burnt sienna — warm accent */
-    --chart-6: #5C3D5E;   /* Aubergine — rich plum */
-    --chart-7: #8B2E3F;   /* Bordeaux — for emphasis */
-    --chart-fill: rgba(26,26,26,0.06);
-    --chart-grid: rgba(0,0,0,0.06);
-    --sig-pos: #4A6B53;
-    --sig-warn: #8B6E3D;
-    --sig-neg: #8B453D;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 24px rgba(0,0,0,0.06);
-    --motion: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  [data-theme="dark"] {
-    --bg: #000000;
-    --surface: #0A0A0A;
-    --surface-2: #141414;
-    --ink: #FFFFFF;
-    --ink-90: rgba(255,255,255,0.90);
-    --ink-70: rgba(255,255,255,0.70);
-    --ink-50: rgba(255,255,255,0.50);
-    --ink-30: rgba(255,255,255,0.30);
-    --ink-15: rgba(255,255,255,0.15);
-    --ink-08: rgba(255,255,255,0.08);
-    --ink-04: rgba(255,255,255,0.04);
-    /* Dark mode chart palette — lifted saturation for contrast on black */
-    --chart-1: #F5F5F5;
-    --chart-2: #DCBA7F;
-    --chart-3: #5DA0B5;
-    --chart-4: #8FBFA0;
-    --chart-5: #E08A5D;
-    --chart-6: #B388B3;
-    --chart-7: #D45B73;
-    --chart-fill: rgba(245,245,245,0.06);
-    --chart-grid: rgba(255,255,255,0.06);
-    --shadow-sm: 0 1px 2px rgba(255,255,255,0.04);
-    --shadow-md: 0 4px 24px rgba(255,255,255,0.04);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
-    font-size: 14px;
-    line-height: 1.55;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    transition: background var(--motion), color var(--motion);
-  }
-  /* Type — strict 4-step hierarchy per brief: 700/600/500/400 */
-  h1, h2, h3, h4 { letter-spacing: -0.015em; }
-  .display { font-size: 32px; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; }
-  .h1 { font-size: 24px; font-weight: 700; line-height: 1.15; }
-  .h2 { font-size: 18px; font-weight: 600; line-height: 1.25; }
-  .h3 { font-size: 15px; font-weight: 600; line-height: 1.3; }
-  .label { font-size: 13px; font-weight: 500; }
-  .body { font-size: 14px; font-weight: 400; color: var(--ink-70); }
-  .caption { font-size: 12px; font-weight: 400; color: var(--ink-50); }
-  .eyebrow {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--ink-50);
-  }
-  .tabular { font-variant-numeric: tabular-nums; }
 
-  /* App layout */
-  .app { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+:root{
+  --bg:#FFFFFF;
+  --card:#FFFFFF;
+  --text:#000000;
+  --muted:#666666;
+  --border:#ECECEC;
+  --soft:#F7F7F7;
+  --success:#1E8E5A;
+  --danger:#C0392B;
+}
 
-  /* Sidebar */
-  .sidebar {
-    border-right: 1px solid var(--ink-08);
-    padding: 32px 20px;
-    position: sticky; top: 0; height: 100vh; overflow-y: auto;
-    background: var(--bg);
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding:32px;
+}
+
+.dashboard{
+  max-width:1600px;
+  margin:auto;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:40px;
+  gap:20px;
+}
+
+.title h1{
+  font-size:42px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.title p{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.7;
+  max-width:720px;
+}
+
+.filters{
+  display:flex;
+  gap:12px;
+}
+
+.filter{
+  border:1px solid var(--border);
+  padding:12px 16px;
+  border-radius:14px;
+  background:#fff;
+  font-size:13px;
+  font-weight:500;
+}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-bottom:24px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:24px;
+}
+
+.kpi-label{
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:14px;
+  font-weight:600;
+}
+
+.kpi-value{
+  font-size:34px;
+  line-height:1;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.kpi-change{
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.up{
+  color:var(--success);
+}
+
+.down{
+  color:var(--danger);
+}
+
+.kpi-spark{
+  width:100%;
+  height:34px;
+  min-height:34px;
+  max-height:34px;
+  position:relative;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.kpi-spark canvas{
+  width:100% !important;
+  height:34px !important;
+  display:block;
+}
+
+.content-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:24px;
+  margin-bottom:24px;
+}
+
+.large-card{
+  min-height:420px;
+}
+
+.section-title{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:24px;
+}
+
+.chart-container{
+  height:320px;
+}
+
+.ai-feed{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.ai-card{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  background:var(--soft);
+}
+
+.ai-card h4{
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.ai-card p{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.bottom-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.table tr{
+  border-bottom:1px solid var(--border);
+}
+
+.table td{
+  padding:18px 0;
+  font-size:14px;
+}
+
+.country{
+  font-weight:600;
+}
+
+.progress{
+  width:100%;
+  height:8px;
+  background:#EEEEEE;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress div{
+  height:100%;
+  background:#000000;
+}
+
+@media(max-width:1200px){
+
+  .kpi-grid{
+    grid-template-columns:1fr 1fr;
   }
-  .brand { padding: 0 8px 28px; margin-bottom: 12px; border-bottom: 1px solid var(--ink-08); }
-  .brand-mark { font-weight: 700; font-size: 14px; letter-spacing: 0.14em; }
-  .brand-sub { font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-50); margin-top: 4px; }
 
-  .nav-group { margin: 24px 0; }
-  .nav-group-label {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--ink-30); padding: 0 8px 12px;
-  }
-  .nav-item {
-    padding: 9px 12px; border-radius: 6px;
-    font-size: 13px; font-weight: 500; color: var(--ink-70);
-    cursor: pointer; transition: all var(--motion);
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 1px;
-  }
-  .nav-item:hover { background: var(--ink-04); color: var(--ink); }
-  .nav-item.active { background: var(--ink); color: var(--bg); font-weight: 600; }
-  .nav-item-num { font-size: 11px; opacity: 0.6; font-variant-numeric: tabular-nums; font-weight: 500; }
-
-  /* Main */
-  .main { padding: 24px 32px 64px; min-width: 0; }
-
-  /* Topbar */
-  .topbar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 16px; margin-bottom: 20px;
-    border-bottom: 1px solid var(--ink-08);
-  }
-  .topbar-left { display: flex; align-items: center; gap: 16px; }
-  .breadcrumb { display: flex; align-items: center; gap: 10px; color: var(--ink-50); font-size: 12px; font-weight: 400; }
-  .breadcrumb-sep { opacity: 0.4; }
-  .breadcrumb-current { color: var(--ink); font-weight: 600; }
-  .topbar-right { display: flex; align-items: center; gap: 12px; }
-
-  /* Buttons — labels per brief use weight 500 */
-  .btn {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
-    padding: 9px 18px; border-radius: 8px;
-    border: 1px solid var(--ink-15); background: transparent; color: var(--ink);
-    cursor: pointer; transition: all var(--motion);
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn:hover { background: var(--ink-04); }
-  .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .btn-primary:hover { background: var(--ink-90); }
-  .btn-icon {
-    width: 36px; height: 36px; padding: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .btn-icon svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; }
-
-  /* Filters */
-  .filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-  .filter-pill {
-    padding: 8px 14px; border-radius: 8px;
-    border: 1px solid var(--ink-15); background: transparent;
-    font-size: 12px; font-weight: 500; color: var(--ink-70);
-    cursor: pointer; transition: all var(--motion);
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .filter-pill:hover { color: var(--ink); border-color: var(--ink-30); }
-  .filter-pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 600; }
-  .filter-meta { color: var(--ink-50); font-size: 11px; font-weight: 400; }
-
-  /* Section */
-  .section { margin-bottom: 24px; }
-  .section-head {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 12px;
+  .content-grid{
+    grid-template-columns:1fr;
   }
 
-  /* Grid */
-  .grid { display: grid; gap: 12px; }
-  .grid-4 { grid-template-columns: repeat(4, 1fr); }
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .grid-2 { grid-template-columns: repeat(2, 1fr); }
-
-  /* Card */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--ink-08);
-    border-radius: 10px;
-    padding: 16px 18px;
-    transition: all var(--motion);
+  .bottom-grid{
+    grid-template-columns:1fr;
   }
-  .card:hover { box-shadow: var(--shadow-md); }
 
-  /* KPI */
-  .kpi-label { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-50); margin-bottom: 8px; }
-  .kpi-value { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
-  .kpi-delta { font-size: 12px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
-  .kpi-delta.up { color: var(--sig-pos); }
-  .kpi-delta.down { color: var(--sig-neg); }
-  .kpi-delta.flat { color: var(--ink-50); }
-  .kpi-sub { font-size: 11px; color: var(--ink-50); margin-left: 6px; font-weight: 400; }
-  .kpi-spark { margin-top: 8px; height: 24px; position: relative; overflow: hidden; }
-  .kpi-spark canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+}
 
-  /* Chart card */
-  .chart-card { padding: 18px 20px; }
-  .chart-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-  .chart-container { position: relative; height: 150px; }
-  .chart-container.tall { height: 190px; }
+@media(max-width:768px){
 
-  /* Table — headers at 500 per "labels" brief */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th {
-    text-align: left; padding: 10px 14px;
-    font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-50); border-bottom: 1px solid var(--ink-15);
+  body{
+    padding:20px;
   }
-  thead th.num { text-align: right; }
-  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--ink-08); font-weight: 400; }
-  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tbody tr:last-child td { border-bottom: 0; }
-  tbody tr:hover { background: var(--ink-04); }
-  .row-emph { font-weight: 600; color: var(--ink); }
-  .delta { font-size: 11px; font-weight: 500; }
-  .delta.up { color: var(--sig-pos); }
-  .delta.down { color: var(--sig-neg); }
-  .delta.flat { color: var(--ink-50); }
 
-  /* Status indicators */
-  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-  .dot.up { background: var(--sig-pos); }
-  .dot.warn { background: var(--sig-warn); }
-  .dot.down { background: var(--sig-neg); }
-  .dot.neutral { background: var(--ink-30); }
-
-  /* Insight card */
-  .insight {
-    border: 1px solid var(--ink-08);
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
-    transition: all var(--motion);
-    cursor: pointer;
-    background: var(--surface);
+  .topbar{
+    flex-direction:column;
   }
-  .insight:hover { background: var(--surface-2); border-color: var(--ink-15); }
-  .insight-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
-  .insight-severity {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 4px;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .insight-severity.action { background: var(--sig-neg); color: white; }
-  .insight-severity.attention { background: var(--sig-warn); color: white; }
-  .insight-severity.watch { background: var(--ink); color: var(--bg); }
-  .insight-severity.positive { background: var(--sig-pos); color: white; }
-  .insight-title { font-size: 14px; font-weight: 600; line-height: 1.35; flex: 1; letter-spacing: -0.005em; }
-  .insight-meta { font-size: 10px; color: var(--ink-50); margin-top: 2px; font-weight: 500; letter-spacing: 0.06em; }
-  .insight-context { font-size: 12px; color: var(--ink-70); margin: 8px 0 10px; line-height: 1.5; font-weight: 400; }
-  .insight-action {
-    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--ink); display: inline-flex; align-items: center; gap: 8px;
-    padding-top: 10px; border-top: 1px solid var(--ink-08);
-  }
-  .insight-action::after { content: "→"; font-size: 14px; }
 
-  /* Section content (single visible at a time) */
-  .section-content { display: none; }
-  .section-content.active { display: block; }
-
-  /* Donut wrapper */
-  .donut-wrap { display: flex; align-items: center; gap: 24px; }
-  .donut-legend { flex: 1; }
-  .legend-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--ink-08); font-size: 13px; font-weight: 400; }
-  .legend-item:last-child { border-bottom: 0; }
-  .legend-name { display: flex; align-items: center; gap: 8px; font-weight: 500; }
-  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
-
-  /* Compset comparison */
-  .compset-row {
-    display: grid; grid-template-columns: 140px 1fr 100px;
-    align-items: center; gap: 16px; padding: 12px 0;
-    border-bottom: 1px solid var(--ink-08);
+  .kpi-grid{
+    grid-template-columns:1fr;
   }
-  .compset-row:last-child { border-bottom: 0; }
-  .compset-name { font-weight: 600; font-size: 13px; }
-  .compset-bar-container { position: relative; height: 8px; background: var(--ink-04); border-radius: 4px; }
-  .compset-bar-fill { position: absolute; height: 100%; border-radius: 4px; }
-  .compset-bar-fill.us { background: var(--chart-2); }
-  .compset-bar-fill.them { background: var(--ink-30); }
-  .compset-value { text-align: right; font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }
 
-  /* Theme toggle */
-  .theme-toggle { width: 44px; height: 24px; background: var(--ink-08); border-radius: 12px; position: relative; cursor: pointer; transition: background var(--motion); }
-  .theme-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: var(--ink); border-radius: 50%; transition: all var(--motion); }
-  [data-theme="dark"] .theme-toggle::after { left: 22px; background: var(--bg); }
+}
 
-  /* Responsive */
-  @media (max-width: 1100px) {
-    .grid-4 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 900px) {
-    .app { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .main { padding: 24px 20px 100px; }
-    .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-    .topbar { flex-direction: column; align-items: flex-start; gap: 16px; }
-    .display { font-size: 28px; }
-    .kpi-value { font-size: 24px; }
-  }
 </style>
 </head>
+
 <body>
 
-<div class="app">
+<div class="dashboard">
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">FAIRMONT</div>
-      <div class="brand-sub">Commercial Intelligence</div>
-    </div>
+  <div class="topbar">
 
-    <div class="nav-group">
-      <div class="nav-group-label">Insights</div>
-      <div class="nav-item active" data-section="overview"><span>Executive Overview</span><span class="nav-item-num">01</span></div>
-      <div class="nav-item" data-section="demand"><span>Demand Intelligence</span><span class="nav-item-num">02</span></div>
-      <div class="nav-item" data-section="pace"><span>Booking Window & Pace</span><span class="nav-item-num">03</span></div>
-      <div class="nav-item" data-section="marketing"><span>Marketing Attribution</span><span class="nav-item-num">04</span></div>
-      <div class="nav-item" data-section="ota"><span>OTA vs Direct</span><span class="nav-item-num">05</span></div>
-      <div class="nav-item" data-section="compset"><span>Competitor Benchmark</span><span class="nav-item-num">06</span></div>
-      <div class="nav-item" data-section="forecast"><span>Forecasting</span><span class="nav-item-num">07</span></div>
-      <div class="nav-item" data-section="ai"><span>AI Recommendations</span><span class="nav-item-num">08</span></div>
-    </div>
+    <div class="title">
+      <h1>Good Morning, Mild.</h1>
 
-    <div class="nav-group">
-      <div class="nav-group-label">Operations</div>
-      <div class="nav-item"><span>Data Sources</span></div>
-      <div class="nav-item"><span>Alerts & Rules</span></div>
-      <div class="nav-item"><span>Reports</span></div>
-      <div class="nav-item"><span>Settings</span></div>
-    </div>
-  </aside>
-
-  <main class="main">
-
-    <div class="topbar">
-      <div class="topbar-left">
-        <div class="breadcrumb">
-          <span>Fairmont Bangkok Sukhumvit</span>
-          <span class="breadcrumb-sep">/</span>
-          <span class="breadcrumb-current" id="section-name">Executive Overview</span>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme"></div>
-        <button class="btn btn-icon" title="Refresh">
-          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-        </button>
-        <button class="btn">Export</button>
-        <button class="btn btn-primary">Share</button>
-      </div>
+      <p>
+        Revenue is pacing ahead of forecast while OTA demand from Singapore and Hong Kong continues to grow.
+        Three commercial opportunities require action this week.
+      </p>
     </div>
 
     <div class="filters">
-      <div class="filter-pill active">Last 30 days</div>
-      <div class="filter-pill">Last 90 days</div>
-      <div class="filter-pill">YTD</div>
-      <div class="filter-pill">Custom</div>
-      <div style="width: 1px; height: 20px; background: var(--ink-15);"></div>
-      <div class="filter-pill">All markets</div>
-      <div class="filter-pill">All channels</div>
-      <div class="filter-pill">All segments</div>
-      <span class="filter-meta tabular">· Updated 14 min ago</span>
+      <div class="filter">Last 30 Days</div>
+      <div class="filter">All Channels</div>
+      <div class="filter">Thailand</div>
     </div>
 
-    <!-- ============================ EXECUTIVE OVERVIEW ============================ -->
-    <div class="section-content active" id="section-overview">
+  </div>
 
-      <div class="section">
-        <div class="display">Good morning, Mild.</div>
-        <p class="body" style="margin-top: 12px; max-width: 720px;">Revenue is up 12 percent week over week and occupancy is tracking ahead of forecast. Three actions need your attention today — see the AI feed for context.</p>
+  <div class="kpi-grid">
+
+    <div class="card">
+
+      <div class="kpi-label">Revenue YTD</div>
+
+      <div class="kpi-value">฿84.2M</div>
+
+      <div class="kpi-change up">
+        ▲ 12.4% vs last period
       </div>
 
-      <div class="grid grid-4 section">
-        <div class="card">
-          <div class="kpi-label">Revenue YTD</div>
-          <div class="kpi-value">฿84.2M</div>
-          <span class="kpi-delta up">▲ 12.4%</span><span class="kpi-sub">vs last period</span>
-          <canvas class="kpi-spark" id="spark1"></canvas>
-        </div>
-        <div class="card">
-          <div class="kpi-label">RevPAR</div>
-          <div class="kpi-value">฿9,840</div>
-          <span class="kpi-delta up">▲ 8.1%</span><span class="kpi-sub">vs LY</span>
-          <canvas class="kpi-spark" id="spark2"></canvas>
-        </div>
-        <div class="card">
-          <div class="kpi-label">Occupancy</div>
-          <div class="kpi-value">78.4%</div>
-          <span class="kpi-delta up">▲ 4.2pp</span><span class="kpi-sub">vs LY</span>
-          <canvas class="kpi-spark" id="spark3"></canvas>
-        </div>
-        <div class="card">
-          <div class="kpi-label">ADR</div>
-          <div class="kpi-value">฿12,560</div>
-          <span class="kpi-delta down">▼ 2.1%</span><span class="kpi-sub">vs LY</span>
-          <canvas class="kpi-spark" id="spark4"></canvas>
-        </div>
+      <div class="kpi-spark">
+        <canvas id="spark1"></canvas>
       </div>
 
-      <div class="grid grid-2 section" style="grid-template-columns: 2fr 1fr;">
-        <div class="card chart-card">
-          <div class="chart-head">
-            <div>
-              <div class="h3">Revenue trend</div>
-              <div class="caption">Monthly · vs last year</div>
+    </div>
+
+    <div class="card">
+
+      <div class="kpi-label">RevPAR</div>
+
+      <div class="kpi-value">฿9,840</div>
+
+      <div class="kpi-change up">
+        ▲ 8.1% vs LY
+      </div>
+
+      <div class="kpi-spark">
+        <canvas id="spark2"></canvas>
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="kpi-label">Occupancy</div>
+
+      <div class="kpi-value">78.4%</div>
+
+      <div class="kpi-change up">
+        ▲ 4.2pp vs LY
+      </div>
+
+      <div class="kpi-spark">
+        <canvas id="spark3"></canvas>
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="kpi-label">ADR</div>
+
+      <div class="kpi-value">฿12,560</div>
+
+      <div class="kpi-change down">
+        ▼ 2.1% vs LY
+      </div>
+
+      <div class="kpi-spark">
+        <canvas id="spark4"></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="content-grid">
+
+    <div class="card large-card">
+
+      <div class="section-title">
+        Revenue Performance
+      </div>
+
+      <div class="chart-container">
+        <canvas id="revenueChart"></canvas>
+      </div>
+
+    </div>
+
+    <div class="card large-card">
+
+      <div class="section-title">
+        AI Commercial Feed
+      </div>
+
+      <div class="ai-feed">
+
+        <div class="ai-card">
+          <h4>Singapore Demand Rising</h4>
+
+          <p>
+            Booking.com search demand from Singapore increased 18% week-over-week for July travel periods.
+          </p>
+        </div>
+
+        <div class="ai-card">
+          <h4>Booking Window Shift</h4>
+
+          <p>
+            Average booking window shortened from 19 days to 11 days. Last-minute conversion campaigns recommended.
+          </p>
+        </div>
+
+        <div class="ai-card">
+          <h4>Meta Campaign Alert</h4>
+
+          <p>
+            Meta retargeting ROAS declined 14% below benchmark. Creative fatigue likely detected.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bottom-grid">
+
+    <div class="card">
+
+      <div class="section-title">
+        Source Market Demand
+      </div>
+
+      <table class="table">
+
+        <tr>
+          <td class="country">Singapore</td>
+          <td>+18%</td>
+
+          <td width="40%">
+            <div class="progress">
+              <div style="width:88%"></div>
             </div>
-            <div class="filter-pill" style="padding: 4px 10px; font-size: 11px;">12 months</div>
-          </div>
-          <div class="chart-container"><canvas id="revenueChart"></canvas></div>
-        </div>
+          </td>
+        </tr>
 
-        <div class="card chart-card">
-          <div class="chart-head"><div><div class="h3">Channel mix</div><div class="caption">Bookings, last 30 days</div></div></div>
-          <div class="donut-wrap">
-            <div style="width: 120px; height: 120px;"><canvas id="channelDonut"></canvas></div>
-            <div class="donut-legend">
-              <div class="legend-item"><div class="legend-name"><div class="legend-swatch" id="sw1"></div>Direct</div><span class="tabular">32%</span></div>
-              <div class="legend-item"><div class="legend-name"><div class="legend-swatch" id="sw2"></div>Booking.com</div><span class="tabular">28%</span></div>
-              <div class="legend-item"><div class="legend-name"><div class="legend-swatch" id="sw3"></div>Expedia</div><span class="tabular">18%</span></div>
-              <div class="legend-item"><div class="legend-name"><div class="legend-swatch" id="sw4"></div>Agoda</div><span class="tabular">12%</span></div>
-              <div class="legend-item"><div class="legend-name"><div class="legend-swatch" id="sw5"></div>Other</div><span class="tabular">10%</span></div>
+        <tr>
+          <td class="country">Hong Kong</td>
+          <td>+11%</td>
+
+          <td>
+            <div class="progress">
+              <div style="width:70%"></div>
             </div>
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
 
-      <div class="grid grid-2 section">
-        <div class="card chart-card">
-          <div class="chart-head"><div><div class="h3">Top source markets</div><div class="caption">Room nights, last 30 days</div></div></div>
-          <div class="chart-container"><canvas id="marketsChart"></canvas></div>
-        </div>
+        <tr>
+          <td class="country">Japan</td>
+          <td>+7%</td>
 
-        <div class="card">
-          <div class="chart-head"><div><div class="h3">Today's snapshot</div><div class="caption">12 May 2026, 09:14 local</div></div></div>
-          <table>
-            <tbody>
-              <tr><td><span class="dot up"></span>Arrivals today</td><td class="num row-emph tabular">42</td></tr>
-              <tr><td><span class="dot up"></span>Departures today</td><td class="num row-emph tabular">38</td></tr>
-              <tr><td><span class="dot warn"></span>OOO rooms</td><td class="num row-emph tabular">4</td></tr>
-              <tr><td><span class="dot neutral"></span>Walk-ins yesterday</td><td class="num row-emph tabular">3</td></tr>
-              <tr><td><span class="dot up"></span>Pickup last 24h</td><td class="num row-emph tabular">+18</td></tr>
-              <tr><td><span class="dot up"></span>OTB next 7 days</td><td class="num row-emph tabular">412</td></tr>
-              <tr><td><span class="dot warn"></span>Cancellations 24h</td><td class="num row-emph tabular">6</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-head">
-          <div>
-            <div class="h2">Top AI insights</div>
-            <div class="caption">Three signals worth your time today</div>
-          </div>
-          <button class="btn">View all 12</button>
-        </div>
-        <div class="insight">
-          <div class="insight-head">
-            <div>
-              <div class="insight-title">Singapore demand increased 18% week-over-week</div>
-              <div class="insight-meta">DEMAND · DETECTED 6:30 AM · CONFIDENCE 92%</div>
+          <td>
+            <div class="progress">
+              <div style="width:55%"></div>
             </div>
-            <div class="insight-severity positive">Opportunity</div>
-          </div>
-          <div class="insight-context">Search index for "Bangkok luxury hotel" from SG IPs jumped 18% week-on-week, with no equivalent rise in OTA arrivals yet. There is a 5–9 day capture window before Booking.com pace catches up.</div>
-          <div class="insight-action">Lift SG paid spend by 25%, refresh creative</div>
-        </div>
+          </td>
+        </tr>
 
-        <div class="insight">
-          <div class="insight-head">
-            <div>
-              <div class="insight-title">Booking window shortened from 19 to 11 days</div>
-              <div class="insight-meta">PACE · DETECTED 6:30 AM · CONFIDENCE 88%</div>
+        <tr>
+          <td class="country">United Kingdom</td>
+          <td>-4%</td>
+
+          <td>
+            <div class="progress">
+              <div style="width:34%"></div>
             </div>
-            <div class="insight-severity attention">Attention</div>
-          </div>
-          <div class="insight-context">Average advance booking window collapsed 42% over the last 14 days, driven by AU and SG markets. Either a competitor opened up rate, a holiday-period campaign is pulling forward demand, or our 30-day inventory is mispriced.</div>
-          <div class="insight-action">Run rate parity check vs compset</div>
-        </div>
+          </td>
+        </tr>
 
-        <div class="insight">
-          <div class="insight-head">
-            <div>
-              <div class="insight-title">Meta retargeting ROAS dropped below target</div>
-              <div class="insight-meta">MARKETING · DETECTED 6:30 AM · CONFIDENCE 95%</div>
-            </div>
-            <div class="insight-severity action">Action required</div>
-          </div>
-          <div class="insight-context">Meta retargeting ROAS fell to 2.8 vs 4.5 target over the last 7 days. Frequency hit 11.4 (target ≤8), creative is 32 days old. Audience saturation indicated.</div>
-          <div class="insight-action">Pause set, refresh creative within 48h</div>
-        </div>
+      </table>
+
+    </div>
+
+    <div class="card">
+
+      <div class="section-title">
+        Channel Mix
+      </div>
+
+      <div class="chart-container">
+        <canvas id="channelChart"></canvas>
       </div>
 
     </div>
 
-    <!-- ============================ DEMAND INTELLIGENCE ============================ -->
-    <div class="section-content" id="section-demand">
+  </div>
 
-      <div class="section">
-        <div class="display">Demand Intelligence</div>
-        <p class="body" style="margin-top: 12px;">Forward-looking demand signals from search, OTA partners, and direct channels — across markets and segments.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">Search demand index</div><div class="kpi-value">142</div><span class="kpi-delta up">▲ 14%</span><span class="kpi-sub">vs 4-wk avg</span></div>
-        <div class="card"><div class="kpi-label">Demand-to-book ratio</div><div class="kpi-value">3.2%</div><span class="kpi-delta up">▲ 0.4pp</span><span class="kpi-sub">vs LY</span></div>
-        <div class="card"><div class="kpi-label">Rising markets</div><div class="kpi-value">6</div><span class="kpi-delta up">▲ 2</span><span class="kpi-sub">new this week</span></div>
-        <div class="card"><div class="kpi-label">Demand-led ADR opp</div><div class="kpi-value">฿820</div><span class="kpi-delta up">▲ +6.5%</span><span class="kpi-sub">vs current ADR</span></div>
-      </div>
-
-      <div class="card chart-card section">
-        <div class="chart-head"><div><div class="h3">Forward demand by source market</div><div class="caption">Indexed search interest, next 90 days</div></div></div>
-        <div class="chart-container tall"><canvas id="demandChart"></canvas></div>
-      </div>
-
-      <div class="card section">
-        <div class="chart-head"><div><div class="h3">Top 10 source markets</div><div class="caption">Demand strength + booking pace</div></div></div>
-        <table>
-          <thead>
-            <tr>
-              <th>Market</th>
-              <th class="num">Search index</th>
-              <th class="num">WoW Δ</th>
-              <th class="num">Bookings</th>
-              <th class="num">ADR</th>
-              <th class="num">Window (days)</th>
-              <th>Signal</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="row-emph">United States</td><td class="num tabular">186</td><td class="num"><span class="delta up">+8%</span></td><td class="num tabular">142</td><td class="num tabular">฿14,200</td><td class="num tabular">28</td><td><span class="dot up"></span>Strong</td></tr>
-            <tr><td class="row-emph">Singapore</td><td class="num tabular">214</td><td class="num"><span class="delta up">+18%</span></td><td class="num tabular">68</td><td class="num tabular">฿13,800</td><td class="num tabular">11</td><td><span class="dot up"></span>Surge</td></tr>
-            <tr><td class="row-emph">Japan</td><td class="num tabular">158</td><td class="num"><span class="delta up">+4%</span></td><td class="num tabular">94</td><td class="num tabular">฿11,900</td><td class="num tabular">22</td><td><span class="dot up"></span>Strong</td></tr>
-            <tr><td class="row-emph">United Kingdom</td><td class="num tabular">132</td><td class="num"><span class="delta up">+6%</span></td><td class="num tabular">78</td><td class="num tabular">฿14,500</td><td class="num tabular">31</td><td><span class="dot up"></span>Healthy</td></tr>
-            <tr><td class="row-emph">Australia</td><td class="num tabular">128</td><td class="num"><span class="delta up">+11%</span></td><td class="num tabular">62</td><td class="num tabular">฿13,200</td><td class="num tabular">24</td><td><span class="dot up"></span>Healthy</td></tr>
-            <tr><td class="row-emph">Hong Kong</td><td class="num tabular">112</td><td class="num"><span class="delta down">−3%</span></td><td class="num tabular">41</td><td class="num tabular">฿12,800</td><td class="num tabular">14</td><td><span class="dot warn"></span>Softening</td></tr>
-            <tr><td class="row-emph">South Korea</td><td class="num tabular">98</td><td class="num"><span class="delta up">+5%</span></td><td class="num tabular">52</td><td class="num tabular">฿11,400</td><td class="num tabular">19</td><td><span class="dot up"></span>Healthy</td></tr>
-            <tr><td class="row-emph">Germany</td><td class="num tabular">86</td><td class="num"><span class="delta flat">0%</span></td><td class="num tabular">38</td><td class="num tabular">฿12,100</td><td class="num tabular">34</td><td><span class="dot neutral"></span>Stable</td></tr>
-            <tr><td class="row-emph">Canada</td><td class="num tabular">74</td><td class="num"><span class="delta up">+7%</span></td><td class="num tabular">29</td><td class="num tabular">฿13,400</td><td class="num tabular">37</td><td><span class="dot up"></span>Building</td></tr>
-            <tr><td class="row-emph">Taiwan</td><td class="num tabular">68</td><td class="num"><span class="delta up">+9%</span></td><td class="num tabular">24</td><td class="num tabular">฿10,800</td><td class="num tabular">15</td><td><span class="dot up"></span>Building</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-    <!-- ============================ BOOKING WINDOW & PACE ============================ -->
-    <div class="section-content" id="section-pace">
-      <div class="section">
-        <div class="display">Booking Window & Pace</div>
-        <p class="body" style="margin-top: 12px;">How far ahead guests are booking, how fast inventory is filling, and where the curves are out of pattern.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">Avg booking window</div><div class="kpi-value">22 days</div><span class="kpi-delta down">▼ 8 days</span><span class="kpi-sub">vs LY</span></div>
-        <div class="card"><div class="kpi-label">Pace vs LY (rooms)</div><div class="kpi-value">+312</div><span class="kpi-delta up">▲ 14%</span><span class="kpi-sub">YTD</span></div>
-        <div class="card"><div class="kpi-label">OTB next 30 days</div><div class="kpi-value">2,180</div><span class="kpi-delta up">▲ 9%</span><span class="kpi-sub">vs forecast</span></div>
-        <div class="card"><div class="kpi-label">Cancellation rate</div><div class="kpi-value">8.2%</div><span class="kpi-delta down">▼ 1.1pp</span><span class="kpi-sub">vs LY</span></div>
-      </div>
-
-      <div class="card chart-card section">
-        <div class="chart-head"><div><div class="h3">Cumulative pace</div><div class="caption">Bookings on the books, this year vs last year</div></div></div>
-        <div class="chart-container tall"><canvas id="paceChart"></canvas></div>
-      </div>
-
-      <div class="grid grid-2 section">
-        <div class="card chart-card">
-          <div class="chart-head"><div><div class="h3">Booking window distribution</div><div class="caption">Last 90 days, all markets</div></div></div>
-          <div class="chart-container"><canvas id="windowChart"></canvas></div>
-        </div>
-
-        <div class="card">
-          <div class="chart-head"><div><div class="h3">Pace by month</div><div class="caption">Next 6 months · OTB vs target</div></div></div>
-          <table>
-            <tbody>
-              <tr><td class="row-emph">May 2026</td><td class="num tabular">2,180 / 2,400</td><td class="num"><span class="delta down">−9%</span></td></tr>
-              <tr><td class="row-emph">June 2026</td><td class="num tabular">1,920 / 2,200</td><td class="num"><span class="delta down">−13%</span></td></tr>
-              <tr><td class="row-emph">July 2026</td><td class="num tabular">1,480 / 2,000</td><td class="num"><span class="delta down">−26%</span></td></tr>
-              <tr><td class="row-emph">August 2026</td><td class="num tabular">980 / 1,800</td><td class="num"><span class="delta down">−46%</span></td></tr>
-              <tr><td class="row-emph">September 2026</td><td class="num tabular">620 / 1,700</td><td class="num"><span class="delta down">−63%</span></td></tr>
-              <tr><td class="row-emph">October 2026</td><td class="num tabular">220 / 1,600</td><td class="num"><span class="delta down">−86%</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============================ MARKETING ATTRIBUTION ============================ -->
-    <div class="section-content" id="section-marketing">
-      <div class="section">
-        <div class="display">Marketing Attribution</div>
-        <p class="body" style="margin-top: 12px;">Where the spend goes, what it returns. Cross-channel view with first-touch and last-touch lenses.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">Spend MTD</div><div class="kpi-value">฿486k</div><span class="kpi-delta up">▲ 6%</span><span class="kpi-sub">vs plan</span></div>
-        <div class="card"><div class="kpi-label">Attributed revenue</div><div class="kpi-value">฿2.18M</div><span class="kpi-delta up">▲ 11%</span><span class="kpi-sub">vs LM</span></div>
-        <div class="card"><div class="kpi-label">Blended ROAS</div><div class="kpi-value">4.5x</div><span class="kpi-delta up">▲ 0.3x</span><span class="kpi-sub">target 4.0x</span></div>
-        <div class="card"><div class="kpi-label">CPA</div><div class="kpi-value">฿1,840</div><span class="kpi-delta down">▼ 8%</span><span class="kpi-sub">vs LM</span></div>
-      </div>
-
-      <div class="card section">
-        <div class="chart-head"><div><div class="h3">Channel performance</div><div class="caption">Last 30 days · last-touch attribution</div></div></div>
-        <table>
-          <thead><tr><th>Channel</th><th class="num">Spend</th><th class="num">Bookings</th><th class="num">Revenue</th><th class="num">ROAS</th><th class="num">CPA</th><th class="num">vs target</th></tr></thead>
-          <tbody>
-            <tr><td class="row-emph">Google PMax</td><td class="num tabular">฿156k</td><td class="num tabular">98</td><td class="num tabular">฿812k</td><td class="num tabular">5.2x</td><td class="num tabular">฿1,590</td><td class="num"><span class="delta up">+18%</span></td></tr>
-            <tr><td class="row-emph">Google Demand Gen</td><td class="num tabular">฿98k</td><td class="num tabular">42</td><td class="num tabular">฿380k</td><td class="num tabular">3.9x</td><td class="num tabular">฿2,330</td><td class="num"><span class="delta down">−3%</span></td></tr>
-            <tr><td class="row-emph">Meta paid</td><td class="num tabular">฿124k</td><td class="num tabular">68</td><td class="num tabular">฿552k</td><td class="num tabular">4.5x</td><td class="num tabular">฿1,820</td><td class="num"><span class="delta up">+12%</span></td></tr>
-            <tr><td class="row-emph">Meta retargeting</td><td class="num tabular">฿42k</td><td class="num tabular">14</td><td class="num tabular">฿118k</td><td class="num tabular">2.8x</td><td class="num tabular">฿3,000</td><td class="num"><span class="delta down">−38%</span></td></tr>
-            <tr><td class="row-emph">TikTok</td><td class="num tabular">฿38k</td><td class="num tabular">16</td><td class="num tabular">฿142k</td><td class="num tabular">3.7x</td><td class="num tabular">฿2,380</td><td class="num"><span class="delta down">−7%</span></td></tr>
-            <tr><td class="row-emph">SEO (organic)</td><td class="num tabular">—</td><td class="num tabular">88</td><td class="num tabular">฿720k</td><td class="num tabular">∞</td><td class="num tabular">—</td><td class="num"><span class="delta up">+22%</span></td></tr>
-            <tr><td class="row-emph">Email</td><td class="num tabular">฿28k</td><td class="num tabular">34</td><td class="num tabular">฿312k</td><td class="num tabular">11.1x</td><td class="num tabular">฿820</td><td class="num"><span class="delta up">+178%</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid grid-2 section">
-        <div class="card chart-card"><div class="chart-head"><div><div class="h3">Funnel</div><div class="caption">Impressions → Booking</div></div></div><div class="chart-container"><canvas id="funnelChart"></canvas></div></div>
-        <div class="card chart-card"><div class="chart-head"><div><div class="h3">ROAS trend by channel</div><div class="caption">12 weeks</div></div></div><div class="chart-container"><canvas id="roasChart"></canvas></div></div>
-      </div>
-    </div>
-
-    <!-- ============================ OTA vs DIRECT ============================ -->
-    <div class="section-content" id="section-ota">
-      <div class="section">
-        <div class="display">OTA vs Direct</div>
-        <p class="body" style="margin-top: 12px;">Channel economics — what each booking actually nets after commission, ad cost, and loyalty discount.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">Direct share</div><div class="kpi-value">32%</div><span class="kpi-delta up">▲ 3pp</span><span class="kpi-sub">vs LY</span></div>
-        <div class="card"><div class="kpi-label">OTA commission</div><div class="kpi-value">฿1.4M</div><span class="kpi-delta flat">·</span><span class="kpi-sub">last 30 days</span></div>
-        <div class="card"><div class="kpi-label">Direct CPA</div><div class="kpi-value">฿1,840</div><span class="kpi-delta down">▼ 8%</span><span class="kpi-sub">vs LM</span></div>
-        <div class="card"><div class="kpi-label">Net ADR Direct vs OTA</div><div class="kpi-value">+฿1,260</div><span class="kpi-delta up">▲ premium</span><span class="kpi-sub">per booking</span></div>
-      </div>
-
-      <div class="grid grid-2 section">
-        <div class="card chart-card">
-          <div class="chart-head"><div><div class="h3">Channel share over time</div><div class="caption">12 months, room nights</div></div></div>
-          <div class="chart-container tall"><canvas id="otaTrendChart"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="chart-head"><div><div class="h3">Channel economics per booking</div><div class="caption">Net rate after costs</div></div></div>
-          <table>
-            <tbody>
-              <tr><td class="row-emph">Direct (web)</td><td class="num tabular">฿12,560</td><td class="num"><span class="delta up">+฿1,260</span></td></tr>
-              <tr><td class="row-emph">Direct (loyalty)</td><td class="num tabular">฿11,800</td><td class="num"><span class="delta up">+฿500</span></td></tr>
-              <tr><td class="row-emph">Booking.com</td><td class="num tabular">฿11,300</td><td class="num"><span class="delta flat">baseline</span></td></tr>
-              <tr><td class="row-emph">Expedia</td><td class="num tabular">฿11,100</td><td class="num"><span class="delta down">−฿200</span></td></tr>
-              <tr><td class="row-emph">Agoda</td><td class="num tabular">฿10,800</td><td class="num"><span class="delta down">−฿500</span></td></tr>
-              <tr><td class="row-emph">Wholesale</td><td class="num tabular">฿9,200</td><td class="num"><span class="delta down">−฿2,100</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============================ COMPSET ============================ -->
-    <div class="section-content" id="section-compset">
-      <div class="section">
-        <div class="display">Competitor Benchmark</div>
-        <p class="body" style="margin-top: 12px;">Where Fairmont Sukhumvit stands versus the Bangkok luxury compset on rate, occupancy, and revenue performance.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">MPI</div><div class="kpi-value">108.4</div><span class="kpi-delta up">▲ 2.1</span><span class="kpi-sub">vs compset</span></div>
-        <div class="card"><div class="kpi-label">ARI</div><div class="kpi-value">104.2</div><span class="kpi-delta up">▲ 1.3</span><span class="kpi-sub">rate index</span></div>
-        <div class="card"><div class="kpi-label">RGI</div><div class="kpi-value">112.9</div><span class="kpi-delta up">▲ 3.4</span><span class="kpi-sub">revenue index</span></div>
-        <div class="card"><div class="kpi-label">Market share</div><div class="kpi-value">14.6%</div><span class="kpi-delta up">▲ 0.4pp</span><span class="kpi-sub">last 30d</span></div>
-      </div>
-
-      <div class="card section">
-        <div class="chart-head"><div><div class="h3">Rate vs compset, current ADR</div><div class="caption">Bangkok luxury cluster · 7 properties</div></div></div>
-        <div style="margin-top: 16px;">
-          <div class="compset-row"><div class="compset-name">Fairmont Sukhumvit</div><div class="compset-bar-container"><div class="compset-bar-fill us" style="width: 88%"></div></div><div class="compset-value">฿12,560</div></div>
-          <div class="compset-row"><div class="compset-name">Park Hyatt</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 96%"></div></div><div class="compset-value">฿13,800</div></div>
-          <div class="compset-row"><div class="compset-name">Capella</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 100%"></div></div><div class="compset-value">฿14,200</div></div>
-          <div class="compset-row"><div class="compset-name">Mandarin Oriental</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 99%"></div></div><div class="compset-value">฿14,100</div></div>
-          <div class="compset-row"><div class="compset-name">Four Seasons</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 98%"></div></div><div class="compset-value">฿13,950</div></div>
-          <div class="compset-row"><div class="compset-name">Anantara Siam</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 82%"></div></div><div class="compset-value">฿11,700</div></div>
-          <div class="compset-row"><div class="compset-name">Banyan Tree</div><div class="compset-bar-container"><div class="compset-bar-fill them" style="width: 79%"></div></div><div class="compset-value">฿11,200</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============================ FORECASTING ============================ -->
-    <div class="section-content" id="section-forecast">
-      <div class="section">
-        <div class="display">Forecasting</div>
-        <p class="body" style="margin-top: 12px;">Forward-looking occupancy and revenue forecasts with confidence bands, plus accuracy track record of the model.</p>
-      </div>
-
-      <div class="grid grid-4 section">
-        <div class="card"><div class="kpi-label">30-day occupancy fcst</div><div class="kpi-value">82%</div><span class="kpi-delta up">▲ 4pp</span><span class="kpi-sub">vs LY</span></div>
-        <div class="card"><div class="kpi-label">60-day revenue fcst</div><div class="kpi-value">฿18.4M</div><span class="kpi-delta up">▲ 11%</span><span class="kpi-sub">vs budget</span></div>
-        <div class="card"><div class="kpi-label">90-day RevPAR fcst</div><div class="kpi-value">฿10,200</div><span class="kpi-delta up">▲ 6%</span><span class="kpi-sub">vs LY</span></div>
-        <div class="card"><div class="kpi-label">Forecast accuracy</div><div class="kpi-value">94.2%</div><span class="kpi-delta up">▲ 1.4pp</span><span class="kpi-sub">90-day MAPE</span></div>
-      </div>
-
-      <div class="card chart-card section">
-        <div class="chart-head"><div><div class="h3">Occupancy forecast — next 90 days</div><div class="caption">Forecast with 80% confidence band · vs current OTB</div></div></div>
-        <div class="chart-container tall"><canvas id="forecastChart"></canvas></div>
-      </div>
-
-      <div class="card section">
-        <div class="chart-head"><div><div class="h3">Occupancy risk periods</div><div class="caption">Where forecast lands below 60%</div></div></div>
-        <table>
-          <thead><tr><th>Date range</th><th class="num">Forecast occ.</th><th class="num">Current OTB</th><th class="num">Gap to target</th><th>Cause</th><th>Action</th></tr></thead>
-          <tbody>
-            <tr><td class="row-emph">28 Jun – 5 Jul</td><td class="num tabular">52%</td><td class="num tabular">38%</td><td class="num"><span class="delta down">−28pp</span></td><td>Post-Eid demand softness</td><td><span class="dot warn"></span>Discount layer + paid push</td></tr>
-            <tr><td class="row-emph">8 Sep – 14 Sep</td><td class="num tabular">48%</td><td class="num tabular">22%</td><td class="num"><span class="delta down">−32pp</span></td><td>Pre-school-holiday lull</td><td><span class="dot warn"></span>Loyalty offer + email push</td></tr>
-            <tr><td class="row-emph">5 Oct – 12 Oct</td><td class="num tabular">58%</td><td class="num tabular">14%</td><td class="num"><span class="delta down">−22pp</span></td><td>Soft shoulder period</td><td><span class="dot warn"></span>Wholesale activation</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ============================ AI RECOMMENDATIONS ============================ -->
-    <div class="section-content" id="section-ai">
-      <div class="section">
-        <div class="display">AI Recommendations Feed</div>
-        <p class="body" style="margin-top: 12px;">Twelve signals detected across demand, marketing, OTA, and operations. Sorted by potential revenue impact.</p>
-      </div>
-
-      <div class="filters">
-        <div class="filter-pill active">All (12)</div>
-        <div class="filter-pill">Action (3)</div>
-        <div class="filter-pill">Attention (5)</div>
-        <div class="filter-pill">Watch (3)</div>
-        <div class="filter-pill">Opportunity (1)</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Singapore demand increased 18% week-over-week</div><div class="insight-meta">DEMAND · 6:30 AM · CONFIDENCE 92% · IMPACT ฿420k</div></div><div class="insight-severity positive">Opportunity</div></div>
-        <div class="insight-context">Search index for "Bangkok luxury hotel" from SG IPs rose 18% week-on-week. OTA arrivals have not yet caught up — there is a 5–9 day capture window.</div>
-        <div class="insight-action">Lift SG paid spend +25%, brief Zenith on creative refresh</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Meta retargeting ROAS dropped below target</div><div class="insight-meta">MARKETING · 6:30 AM · CONFIDENCE 95% · IMPACT ฿180k</div></div><div class="insight-severity action">Action required</div></div>
-        <div class="insight-context">Meta retargeting ROAS fell to 2.8 vs 4.5 target over the last 7 days. Frequency hit 11.4 (target ≤8), creative is 32 days old. Audience saturation likely.</div>
-        <div class="insight-action">Pause underperforming ad sets, refresh creative within 48h</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Booking window collapsed from 19 to 11 days</div><div class="insight-meta">PACE · 6:30 AM · CONFIDENCE 88% · IMPACT ฿320k</div></div><div class="insight-severity attention">Attention</div></div>
-        <div class="insight-context">Average advance booking window compressed 42% in 14 days, driven by AU and SG. Rate parity check needed against compset.</div>
-        <div class="insight-action">Verify Booking.com/Agoda rate parity, run pricing review</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">28 June – 5 July occupancy risk: 52% forecast vs 80% target</div><div class="insight-meta">FORECAST · 6:00 AM · CONFIDENCE 86% · IMPACT ฿680k</div></div><div class="insight-severity action">Action required</div></div>
-        <div class="insight-context">Post-Eid demand softness layered with compset adding capacity. Forecast model flags 28 percentage-point gap to target. Needs intervention 4–5 weeks out.</div>
-        <div class="insight-action">Activate loyalty 15% offer + wholesale push by 1 June</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Agoda commission climbed to 21% on Tier 1 markets</div><div class="insight-meta">OTA · YESTERDAY · CONFIDENCE 100% · IMPACT ฿240k/mo</div></div><div class="insight-severity attention">Attention</div></div>
-        <div class="insight-context">Agoda Preferred Partner program upgraded our tier, lifting commission from 18% to 21% for SG/HK/MY traffic. Net ADR drops ฿380 per booking.</div>
-        <div class="insight-action">Negotiate tier reset; redirect SG/HK paid to direct</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Direct share crossed 32% — highest in 18 months</div><div class="insight-meta">CHANNEL · WEEKLY · CONFIDENCE 100% · IMPACT POSITIVE</div></div><div class="insight-severity watch">Watch</div></div>
-        <div class="insight-context">Direct bookings as share of total reached 32%, up 3pp YoY. SEO traffic + email retargeting driving the lift. Net ADR benefit ~฿380 per booking.</div>
-        <div class="insight-action">Sustain, study what's working; consider direct-rate test</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Email channel ROAS at 11.1x — well above benchmark</div><div class="insight-meta">MARKETING · WEEKLY · CONFIDENCE 100% · IMPACT POSITIVE</div></div><div class="insight-severity watch">Watch</div></div>
-        <div class="insight-context">Owned email is delivering 11.1x return — the highest-performing channel. Pre-stay upsell sequence converting at 14%. Volume is the constraint, not ROAS.</div>
-        <div class="insight-action">Expand to in-stay and post-stay sequences</div>
-      </div>
-
-      <div class="insight">
-        <div class="insight-head"><div><div class="insight-title">Hong Kong demand softened 3% — first decline in 6 weeks</div><div class="insight-meta">DEMAND · 6:30 AM · CONFIDENCE 76% · IMPACT ฿110k</div></div><div class="insight-severity watch">Watch</div></div>
-        <div class="insight-context">HK search index fell 3% week-on-week after 6 consecutive weeks of growth. May be temporary — monitor before action.</div>
-        <div class="insight-action">Continue monitoring; review again 19 May</div>
-      </div>
-
-    </div>
-
-  </main>
 </div>
 
 <script>
-  // ====== THEME ======
-  function toggleTheme() {
-    const root = document.documentElement;
-    const cur = root.getAttribute('data-theme');
-    const next = cur === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    rebuildCharts();
-  }
 
-  // ====== NAVIGATION ======
-  document.querySelectorAll('.nav-item[data-section]').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-      item.classList.add('active');
-      const target = item.dataset.section;
-      document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
-      document.getElementById('section-' + target).classList.add('active');
-      document.getElementById('section-name').textContent = item.querySelector('span').textContent;
-      window.scrollTo(0, 0);
-    });
+Chart.defaults.font.family = 'Montserrat';
+
+function spark(id,data){
+
+  new Chart(document.getElementById(id),{
+
+    type:'line',
+
+    data:{
+      labels:data.map((_,i)=>i),
+
+      datasets:[{
+        data:data,
+        borderColor:'#000000',
+        borderWidth:1.8,
+        pointRadius:0,
+        tension:.45,
+        fill:false
+      }]
+    },
+
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+
+      plugins:{
+        legend:{
+          display:false
+        },
+
+        tooltip:{
+          enabled:false
+        }
+      },
+
+      layout:{
+        padding:0
+      },
+
+      scales:{
+        x:{
+          display:false
+        },
+
+        y:{
+          display:false
+        }
+      },
+
+      elements:{
+        line:{
+          capBezierPoints:true
+        }
+      }
+    }
+
   });
 
-  document.querySelectorAll('.filter-pill').forEach(p => {
-    p.addEventListener('click', () => {
-      const siblings = p.parentElement.querySelectorAll('.filter-pill');
-      siblings.forEach(s => s.classList.remove('active'));
-      p.classList.add('active');
-    });
-  });
+}
 
-  // ====== CHART PALETTE FROM CSS VARS ======
-  function css(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  }
-  function palette() {
-    return {
-      c1: css('--chart-1'),
-      c2: css('--chart-2'),
-      c3: css('--chart-3'),
-      c4: css('--chart-4'),
-      c5: css('--chart-5'),
-      c6: css('--chart-6'),
-      c7: css('--chart-7'),
-      ink: css('--ink'),
-      ink30: css('--ink-30'),
-      ink50: css('--ink-50'),
-      ink08: css('--ink-08'),
-      fill: css('--chart-fill'),
-      grid: css('--chart-grid'),
-    };
-  }
-  function rgba(hex, a) {
-    if (hex.startsWith('rgba')) return hex;
-    if (hex.startsWith('rgb(')) return hex.replace('rgb(', 'rgba(').replace(')', `, ${a})`);
-    // hex like #A98C5C
-    const h = hex.replace('#', '');
-    const r = parseInt(h.substring(0, 2), 16);
-    const g = parseInt(h.substring(2, 4), 16);
-    const b = parseInt(h.substring(4, 6), 16);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  }
+spark('spark1',[12,18,16,22,20,25,24,30]);
+spark('spark2',[6,8,7,10,9,11,10,14]);
+spark('spark3',[60,62,64,65,67,70,72,78]);
+spark('spark4',[15,14,16,15,14,13,12,11]);
 
-  // ====== CHART REGISTRY ======
-  const charts = {};
+new Chart(document.getElementById('revenueChart'),{
 
-  function makeSpark(id, data) {
-    const ctx = document.getElementById(id);
-    if (!ctx) return;
-    const p = palette();
-    if (charts[id]) charts[id].destroy();
-    charts[id] = new Chart(ctx, {
-      type: 'line',
-      data: { labels: data.map((_, i) => i), datasets: [{ data, borderColor: p.c1, backgroundColor: 'transparent', tension: 0.3 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
-    });
-  }
+  type:'line',
 
-  function buildCharts() {
-    const p = palette();
-    Chart.defaults.font.family = 'Montserrat, sans-serif';
-    Chart.defaults.font.size = 11;
-    Chart.defaults.font.weight = 500;
-    Chart.defaults.color = p.ink50;
-    Chart.defaults.plugins.legend.display = false;
-    Chart.defaults.elements.point.radius = 0;
-    Chart.defaults.elements.line.borderWidth = 2;
+  data:{
+    labels:[
+      'Jan','Feb','Mar','Apr',
+      'May','Jun','Jul','Aug',
+      'Sep','Oct','Nov','Dec'
+    ],
 
-    // Sparklines
-    makeSpark('spark1', [62, 64, 68, 67, 71, 74, 78, 76, 80, 82, 81, 84]);
-    makeSpark('spark2', [85, 88, 87, 90, 92, 91, 94, 96, 95, 97, 98, 98.4]);
-    makeSpark('spark3', [70, 72, 73, 74, 76, 75, 77, 76, 78, 79, 78, 78.4]);
-    makeSpark('spark4', [128, 130, 129, 127, 126, 128, 127, 125, 126, 125, 126, 125.6]);
+    datasets:[{
+      label:'Revenue',
 
-    // Donut legend swatches
-    ['sw1','sw2','sw3','sw4','sw5'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el) el.style.background = [p.c1, p.c2, p.c3, p.c4, p.c6][i];
-    });
+      data:[
+        4.2,5.1,5.6,6.4,
+        7.1,7.8,8.4,8.9,
+        9.4,9.9,10.5,11.2
+      ],
 
-    // Revenue trend — ink + champagne dotted (period comparison)
-    if (charts.revenue) charts.revenue.destroy();
-    charts.revenue = new Chart(document.getElementById('revenueChart'), {
-      type: 'line',
-      data: {
-        labels: ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'],
-        datasets: [
-          { label: 'This year', data: [6.2,6.4,6.8,6.7,7.1,7.4,7.8,7.6,8.0,8.2,8.1,8.4], borderColor: p.c1, backgroundColor: rgba(p.c1, 0.08), fill: true, tension: 0.25, borderWidth: 2.5 },
-          { label: 'Last year', data: [5.4,5.6,5.7,5.8,6.0,6.2,6.4,6.5,6.7,6.9,7.0,7.2], borderColor: p.c2, backgroundColor: 'transparent', borderDash: [4,4], tension: 0.25, borderWidth: 2 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 12, font: { size: 11, weight: 500 } } } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false }, ticks: { callback: v => '฿' + v + 'M' } } }
+      borderColor:'#000000',
+      borderWidth:3,
+      fill:false,
+      tension:.35,
+      pointRadius:0
+    }]
+  },
+
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+
+    plugins:{
+      legend:{
+        display:false
       }
-    });
+    },
 
-    // Channel donut — 5 colors
-    if (charts.donut) charts.donut.destroy();
-    charts.donut = new Chart(document.getElementById('channelDonut'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Direct','Booking.com','Expedia','Agoda','Other'],
-        datasets: [{ data: [32,28,18,12,10], backgroundColor: [p.c1, p.c2, p.c3, p.c4, p.c6], borderWidth: 0 }]
+    scales:{
+      x:{
+        grid:{
+          display:false
+        }
       },
-      options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } }
-    });
 
-    // Top markets — champagne (single series, warm accent)
-    if (charts.markets) charts.markets.destroy();
-    charts.markets = new Chart(document.getElementById('marketsChart'), {
-      type: 'bar',
-      data: {
-        labels: ['US','JP','UK','AU','SG','KR','HK','DE','CA','TW'],
-        datasets: [{ data: [142, 94, 78, 62, 68, 52, 41, 38, 29, 24], backgroundColor: p.c2, borderRadius: 3 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-        scales: { x: { grid: { color: p.grid }, border: { display: false } }, y: { grid: { display: false }, border: { display: false } } }
+      y:{
+        grid:{
+          color:'#EEEEEE'
+        }
       }
-    });
-
-    // Demand — 5 colors per market
-    if (charts.demand) charts.demand.destroy();
-    charts.demand = new Chart(document.getElementById('demandChart'), {
-      type: 'line',
-      data: {
-        labels: Array.from({length: 12}, (_, i) => 'W' + (i+1)),
-        datasets: [
-          { label: 'US', data: [120,124,128,134,138,142,148,156,162,170,178,186], borderColor: p.c1, tension: 0.3, borderWidth: 2.5 },
-          { label: 'SG', data: [110,114,120,128,138,148,158,170,184,196,206,214], borderColor: p.c2, tension: 0.3, borderWidth: 2.5 },
-          { label: 'JP', data: [105,110,115,118,124,128,134,138,144,148,154,158], borderColor: p.c3, tension: 0.3, borderWidth: 2.5 },
-          { label: 'UK', data: [98,102,106,110,114,118,122,124,126,128,130,132], borderColor: p.c4, tension: 0.3, borderWidth: 2.5 },
-          { label: 'AU', data: [90,94,98,104,108,112,116,118,122,124,126,128], borderColor: p.c5, tension: 0.3, borderWidth: 2.5 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 14, font: { size: 11, weight: 500 } } } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false } } }
-      }
-    });
-
-    // Pace — TY ink filled, LY champagne dotted
-    if (charts.pace) charts.pace.destroy();
-    charts.pace = new Chart(document.getElementById('paceChart'), {
-      type: 'line',
-      data: {
-        labels: Array.from({length: 12}, (_, i) => 'W' + (i+1)),
-        datasets: [
-          { label: 'This year', data: [120,260,420,610,820,1080,1340,1620,1920,2240,2560,2880], borderColor: p.c1, fill: true, backgroundColor: rgba(p.c1, 0.08), tension: 0.2, borderWidth: 2.5 },
-          { label: 'Last year', data: [110,240,380,540,710,920,1140,1380,1640,1900,2180,2480], borderColor: p.c2, borderDash: [4,4], tension: 0.2, borderWidth: 2 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 12, font: { weight: 500 } } } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false } } }
-      }
-    });
-
-    // Window distribution — champagne
-    if (charts.window) charts.window.destroy();
-    charts.window = new Chart(document.getElementById('windowChart'), {
-      type: 'bar',
-      data: {
-        labels: ['0–7d','8–14d','15–21d','22–30d','31+d'],
-        datasets: [{ data: [22, 24, 18, 14, 22], backgroundColor: p.c2, borderRadius: 3 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false }, ticks: { callback: v => v + '%' } } }
-      }
-    });
-
-    // Funnel — slate
-    if (charts.funnel) charts.funnel.destroy();
-    charts.funnel = new Chart(document.getElementById('funnelChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Impressions','Clicks','Sessions','Add to cart','Bookings'],
-        datasets: [{ data: [2400000, 38400, 24600, 4200, 380], backgroundColor: p.c3, borderRadius: 3 }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-        scales: { x: { type: 'logarithmic', grid: { color: p.grid }, border: { display: false } }, y: { grid: { display: false }, border: { display: false } } }
-      }
-    });
-
-    // ROAS — 3 channels, terracotta flags the underperformer
-    if (charts.roas) charts.roas.destroy();
-    charts.roas = new Chart(document.getElementById('roasChart'), {
-      type: 'line',
-      data: {
-        labels: Array.from({length: 12}, (_, i) => 'W' + (i+1)),
-        datasets: [
-          { label: 'PMax', data: [4.8,5.0,5.1,5.0,5.2,5.3,5.2,5.1,5.2,5.3,5.2,5.2], borderColor: p.c1, tension: 0.3, borderWidth: 2.5 },
-          { label: 'Meta', data: [4.6,4.5,4.4,4.3,4.4,4.5,4.4,4.5,4.6,4.5,4.4,4.5], borderColor: p.c3, tension: 0.3, borderWidth: 2.5 },
-          { label: 'Retarget', data: [4.4,4.2,4.0,3.8,3.6,3.4,3.2,3.0,2.9,2.8,2.8,2.8], borderColor: p.c5, tension: 0.3, borderWidth: 2.5 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 12, font: { weight: 500 } } } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false } } }
-      }
-    });
-
-    // OTA trend — stacked area, 5 channels matching donut
-    if (charts.otaTrend) charts.otaTrend.destroy();
-    charts.otaTrend = new Chart(document.getElementById('otaTrendChart'), {
-      type: 'line',
-      data: {
-        labels: ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'],
-        datasets: [
-          { label: 'Direct', data: [22,24,25,26,28,28,29,30,30,31,31,32], borderColor: p.c1, backgroundColor: rgba(p.c1, 0.85), tension: 0.2, fill: 'origin' },
-          { label: 'Booking', data: [30,30,29,29,28,29,28,28,28,28,28,28], borderColor: p.c2, backgroundColor: rgba(p.c2, 0.85), tension: 0.2, fill: '-1' },
-          { label: 'Expedia', data: [20,20,20,19,19,19,18,18,18,18,18,18], borderColor: p.c3, backgroundColor: rgba(p.c3, 0.85), tension: 0.2, fill: '-1' },
-          { label: 'Agoda', data: [16,14,14,14,13,12,13,12,12,12,12,12], borderColor: p.c4, backgroundColor: rgba(p.c4, 0.85), tension: 0.2, fill: '-1' },
-          { label: 'Other', data: [12,12,12,12,12,12,12,12,12,11,11,10], borderColor: p.c6, backgroundColor: rgba(p.c6, 0.85), tension: 0.2, fill: '-1' }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 10, font: { size: 10, weight: 500 } } } },
-        scales: { x: { grid: { display: false }, border: { display: false }, stacked: true }, y: { grid: { color: p.grid }, border: { display: false }, stacked: true, ticks: { callback: v => v + '%' } } }
-      }
-    });
-
-    // Forecast — ink line + ink confidence band + champagne OTB line (the diverging accent)
-    if (charts.forecast) charts.forecast.destroy();
-    charts.forecast = new Chart(document.getElementById('forecastChart'), {
-      type: 'line',
-      data: {
-        labels: Array.from({length: 13}, (_, i) => 'W' + (i+1)),
-        datasets: [
-          { label: 'Upper 80%', data: [82,84,86,84,82,80,78,76,72,68,65,62,60], borderColor: 'transparent', backgroundColor: rgba(p.c1, 0.08), fill: '+1', tension: 0.25, pointRadius: 0 },
-          { label: 'Forecast', data: [78,80,82,80,78,76,72,70,66,62,58,55,52], borderColor: p.c1, backgroundColor: 'transparent', tension: 0.25, pointRadius: 0, borderWidth: 2.5 },
-          { label: 'Lower 80%', data: [74,76,78,76,74,72,66,64,60,56,52,48,44], borderColor: 'transparent', backgroundColor: 'transparent', fill: '-1', tension: 0.25, pointRadius: 0 },
-          { label: 'Current OTB', data: [76,77,75,72,68,62,55,48,40,30,22,14,8], borderColor: p.c2, borderDash: [4,4], backgroundColor: 'transparent', tension: 0.25, pointRadius: 0, borderWidth: 2.5 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: true, position: 'top', align: 'end', labels: { boxWidth: 14, padding: 12, font: { weight: 500 }, filter: (l) => l.text !== 'Upper 80%' && l.text !== 'Lower 80%' } } },
-        scales: { x: { grid: { display: false }, border: { display: false } }, y: { grid: { color: p.grid }, border: { display: false }, ticks: { callback: v => v + '%' }, min: 30, max: 100 } }
-      }
-    });
+    }
   }
 
-  function rebuildCharts() {
-    buildCharts();
+});
+
+new Chart(document.getElementById('channelChart'),{
+
+  type:'doughnut',
+
+  data:{
+    labels:[
+      'Direct',
+      'Booking.com',
+      'Expedia',
+      'Corporate'
+    ],
+
+    datasets:[{
+      data:[42,28,18,12],
+
+      backgroundColor:[
+        '#000000',
+        '#444444',
+        '#777777',
+        '#BBBBBB'
+      ],
+
+      borderWidth:0
+    }]
+  },
+
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+
+    plugins:{
+      legend:{
+        position:'bottom'
+      }
+    }
   }
 
-  buildCharts();
+});
+
 </script>
 
 </body>
