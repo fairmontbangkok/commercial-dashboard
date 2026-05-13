@@ -64,7 +64,7 @@
     --shadow-sm: 0 1px 2px rgba(255,255,255,0.04);
     --shadow-md: 0 4px 24px rgba(255,255,255,0.04);
   }
-  * { box-sizing: border-box; width: "50px" ; height: "50px"; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     background: var(--bg);
     color: var(--ink);
@@ -198,8 +198,7 @@
   .kpi-delta.flat { color: var(--ink-50); }
   .kpi-sub { font-size: 11px; color: var(--ink-50); margin-left: 6px; font-weight: 400; }
   .kpi-spark { margin-top: 8px; height: 24px; position: relative; overflow: hidden; }
-  .kpi-spark canvas { position: relative; inset: 0; width: 50px ; height: 50px; }
-  
+  .kpi-spark canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 
   /* Chart card */
   .chart-card { padding: 18px 20px; }
