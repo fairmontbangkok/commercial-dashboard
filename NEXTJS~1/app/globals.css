@@ -1,0 +1,61 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-montserrat);
+}
+
+:root {
+  --paper: 0 0% 100%;
+  --ink: 0 0% 0%;
+  --surface: 0 0% 100%;
+  --surface-2: 0 0% 98%;
+  --accent: 36 30% 51%;
+  --signal-positive: 142 18% 35%;
+  --signal-caution: 36 36% 39%;
+  --signal-negative: 6 36% 39%;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --paper: 0 0% 0%;
+  --ink: 0 0% 100%;
+  --surface: 0 0% 4%;
+  --surface-2: 0 0% 8%;
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+  background: hsl(var(--paper));
+  color: hsl(var(--ink));
+}
+
+body {
+  font-family: var(--font-montserrat), system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'tnum' 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: hsl(var(--ink));
+  color: hsl(var(--paper));
+}
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--ink) / 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--ink) / 0.25);
+}
