@@ -1,5 +1,3 @@
-# commercial-dashboard
-A modern luxury hotel analytics dashboard designed for commercial, revenue, and digital marketing teams.
 [README.md](https://github.com/user-attachments/files/27681892/README.md)
 # Commercial Intelligence — Fairmont Bangkok Sukhumvit
 
